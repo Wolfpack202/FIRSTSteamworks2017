@@ -4,6 +4,7 @@ import org.usfirst.frc.team4131.robot.commands.*;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+
 /**
  * This class is the glue that binds the controls on the physical operator
  * interface to the commands and command groups that allow control of the robot.
@@ -27,18 +28,20 @@ public class OI{
 	private JoystickButton chargeShooter;
 	private JoystickButton shoot;
 	private JoystickButton climb;
+	private JoystickButton slowClimb;
 	private JoystickButton killShooter;
 	private JoystickButton shift;
-	public OI() {
+	public OI(){
 		leftStick = new Joystick(RobotMap.LEFT_JOYSTICK);
 		rightStick = new Joystick(RobotMap.RIGHT_JOYSTICK);
 		collect = new JoystickButton(leftStick, 4);
-		spitOut = new JoystickButton(rightStick , 3);
-		chargeShooter = new JoystickButton(leftStick , 1);
-		shoot = new JoystickButton(rightStick , 1);
-		climb = new JoystickButton(leftStick , 8);
-		killShooter = new JoystickButton(rightStick , 2);
-		shift = new JoystickButton(rightStick , 6);
+		spitOut = new JoystickButton(rightStick, 3);
+		chargeShooter = new JoystickButton(leftStick, 1);
+		shoot = new JoystickButton(rightStick, 1);
+		climb = new JoystickButton(leftStick, 7);
+		slowClimb = new JoystickButton(leftStick, 8);
+		killShooter = new JoystickButton(rightStick, 2);
+		shift = new JoystickButton(rightStick, 6);
 		
 		ChargeShooter chargeShooterCommand = new ChargeShooter();
 		
@@ -47,16 +50,19 @@ public class OI{
 		chargeShooter.whenPressed(chargeShooterCommand);
 		shoot.whileHeld(new Shoot());
 		climb.whileHeld(new Climb());
+		slowClimb.whileHeld(new EngageClimber());
 		killShooter.cancelWhenPressed(chargeShooterCommand);
 	}
-	public double getLeftSpeed() {
-		return leftStick.getRawAxis(1);
+	public double getLeftSpeed(){
+		return constrain(leftStick.getRawAxis(1));
 	}
-	public double getRightSpeed() {
-		return rightStick.getRawAxis(1);
+	public double getRightSpeed(){
+		return constrain(rightStick.getRawAxis(1));
 	}
-	public boolean shiftDown() {
+	public boolean shiftDown(){
 		return shift.get();
 	}
+	private double constrain(double value){
+		return Math.max(-1, Math.min(1, value));
+	}
 }
-

@@ -24,7 +24,7 @@ public class Shooter extends Subsystem{
 		flywheelMotor.setCloseLoopRampRate(0.0);
 	}
 	public void runFlywheel(){
-		flywheelMotor.set(1);
+		flywheelMotor.set(-1);
 	}
 	public void stopFlywheel(){
 		flywheelMotor.set(0);
